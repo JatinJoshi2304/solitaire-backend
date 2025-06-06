@@ -1,7 +1,7 @@
 import { Player } from "../models/playerModel.js";
 export const createGuestPlayer = async (req, res) => {
     try {
-        const { name } = req.body;
+        const { name, points } = req.body;
         if (!name || typeof name !== "string") {
             return res
                 .status(400)
@@ -13,7 +13,8 @@ export const createGuestPlayer = async (req, res) => {
         }
         const newPlayer = await Player.create({
             name,
-            score: 0,
+            points,
+            bet: 0,
             isReady: false,
             roomId: null,
             isOwner: false,

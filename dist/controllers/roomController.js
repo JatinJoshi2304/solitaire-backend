@@ -46,6 +46,9 @@ export const joinRoom = async (req, res) => {
         if (!room) {
             return res.status(404).json({ message: "Room not found" });
         }
+        if (room.players.length >= 5) {
+            return res.status(409).json({ message: "Players Limit reached" });
+        }
         if (room.isPasswordProtected && room.code !== code) {
             return res.status(403).json({ message: "Invalid room code" });
         }
@@ -65,6 +68,7 @@ export const joinRoom = async (req, res) => {
                 .json({ message: "Guest player not found or already joined a room" });
         }
         room.players.push(existingPlayer._id);
+        await room.save();
         // ✅ Assign roomId to player
         existingPlayer.roomId = new Types.ObjectId(roomId);
         await existingPlayer.save();

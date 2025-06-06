@@ -3,7 +3,7 @@ import { Player } from "../models/playerModel.js";
 
 export const createGuestPlayer = async (req: Request, res: any) => {
   try {
-    const { name } = req.body;
+    const { name, points } = req.body;
 
     if (!name || typeof name !== "string") {
       return res
@@ -18,7 +18,8 @@ export const createGuestPlayer = async (req: Request, res: any) => {
 
     const newPlayer = await Player.create({
       name,
-      score: 0,
+      points,
+      bet: 0,
       isReady: false,
       roomId: null,
       isOwner: false,
@@ -41,7 +42,7 @@ export const getPlayerWithRoomId = async (req: Request, res: any) => {
       return res.status(400).json({ message: "Room ID is required." });
     }
 
-    const players = await Player.find({ roomId: roomId });
+    const players = await Player.find({ roomId }).sort({ orderId: 1 });
     if (!players) {
       return res.status(404).json({ message: "Players not found." });
     }

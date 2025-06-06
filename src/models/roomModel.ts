@@ -5,6 +5,7 @@ export interface IRoom extends Document {
   code?: string;
   isPasswordProtected: boolean;
   players: Types.ObjectId[];
+  isFull: boolean;
   ownerId?: string;
 }
 
@@ -14,6 +15,7 @@ const RoomSchema = new Schema<IRoom>(
     code: { type: String },
     isPasswordProtected: { type: Boolean, default: false },
     players: [{ type: Schema.Types.ObjectId, ref: "Player" }],
+    isFull: { type: Boolean, default: false },
     ownerId: { type: String },
   },
   { timestamps: true }
