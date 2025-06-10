@@ -34,7 +34,7 @@ export const getPlayerWithRoomId = async (req, res) => {
         if (!roomId) {
             return res.status(400).json({ message: "Room ID is required." });
         }
-        const players = await Player.find({ roomId: roomId });
+        const players = await Player.find({ roomId }).sort({ orderId: 1 });
         if (!players) {
             return res.status(404).json({ message: "Players not found." });
         }

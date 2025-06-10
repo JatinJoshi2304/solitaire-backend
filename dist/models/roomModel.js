@@ -6,5 +6,6 @@ const RoomSchema = new Schema({
     players: [{ type: Schema.Types.ObjectId, ref: "Player" }],
     isFull: { type: Boolean, default: false },
     ownerId: { type: String },
+    isGameStarted: { type: Boolean, default: false },
 }, { timestamps: true });
 export const Room = mongoose.model("Room", RoomSchema);

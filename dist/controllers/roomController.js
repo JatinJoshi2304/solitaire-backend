@@ -88,11 +88,39 @@ export const joinRoom = async (req, res) => {
 };
 export const getRooms = async (req, res) => {
     try {
-        const room = await Room.find();
+        const room = await Room.find().sort({ createdAt: -1 });
         res.json({ room });
     }
     catch (error) {
         res.status(500).json({ message: "Failed to fetch room" });
+    }
+};
+export const updateRoomByRoomId = async (req, res) => {
+    try {
+        const { roomId } = req.params;
+        const { isGameStarted } = req.body;
+        if (typeof isGameStarted !== "boolean") {
+            return res.status(400).json({
+                message: "Invalid value for isGameStarted. Must be a boolean.",
+            });
+        }
+        const updatedRoom = await Room.findOneAndUpdate({ _id: roomId }, { isGameStarted }, { new: true });
+        if (!updatedRoom) {
+            return res.status(404).json({
+                success: false,
+                message: "Room not found",
+            });
+        }
+        return res.status(200).json({
+            message: "Room updated successfully",
+            data: updatedRoom,
+        });
+    }
+    catch (error) {
+        console.error("Error updating room:", error);
+        return res.status(500).json({
+            message: "Internal server error",
+        });
     }
 };
 export const getRoomWithPlayers = async (req, res) => {

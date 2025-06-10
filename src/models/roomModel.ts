@@ -7,6 +7,7 @@ export interface IRoom extends Document {
   players: Types.ObjectId[];
   isFull: boolean;
   ownerId?: string;
+  isGameStarted: boolean;
 }
 
 const RoomSchema = new Schema<IRoom>(
@@ -17,6 +18,7 @@ const RoomSchema = new Schema<IRoom>(
     players: [{ type: Schema.Types.ObjectId, ref: "Player" }],
     isFull: { type: Boolean, default: false },
     ownerId: { type: String },
+    isGameStarted: { type: Boolean, default: false },
   },
   { timestamps: true }
 );
